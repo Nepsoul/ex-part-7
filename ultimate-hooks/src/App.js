@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import noteService from "./service/noteApi";
 
 const useField = (type) => {
   const [value, setValue] = useState("");
@@ -13,6 +13,12 @@ const useField = (type) => {
 
 const useResource = (baseUrl) => {
   const [resource, setResource] = useState([]);
+
+  useEffect(() => {
+    noteService.getAll(baseUrl).then((data) => {
+      setResource(data);
+    });
+  }, []);
 
   const create = (resource) => {};
 
@@ -28,8 +34,8 @@ const App = () => {
   const name = useField("text");
   const number = useField("text");
 
-  const [notes, noteService] = useResource("http//localhost/:3005/notes");
-  const [persons, personService] = useResource("http//localhost/:3005/persons");
+  const [notes, noteService] = useResource("http://localhost:3005/notes");
+  const [persons, personService] = useResource("http://localhost:3005/persons");
   const handleNoteSubmit = (event) => {
     event.preventDefault();
     noteService.create({ content: content.value });
