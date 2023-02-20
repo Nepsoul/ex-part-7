@@ -18,7 +18,7 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null);
 
-  console.log(name, "name");
+  //console.log(name, "name");
   useEffect(() => {
     if (name)
       axios
@@ -60,7 +60,7 @@ const App = () => {
     setName(nameInput.value);
   };
 
-  console.log(country, "country");
+  //console.log(country, "country");
 
   return (
     <div>
@@ -68,7 +68,7 @@ const App = () => {
         <input {...nameInput} />
         <button>find</button>
       </form>
-      {<Country country={country} />}
+      {!name ? null : <Country country={country} />}
     </div>
   );
 };
