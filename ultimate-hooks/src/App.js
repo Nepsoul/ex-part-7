@@ -16,11 +16,20 @@ const useResource = (baseUrl) => {
 
   useEffect(() => {
     noteService.getAll(baseUrl).then((data) => {
+      // console.log(data, "data");
       setResource(data);
     });
   }, []);
 
-  const create = (resource) => {};
+  const create = (resources) => {
+    // console.log(resource, "resource");
+    //console.log(resources, "resources");
+    //console.log(baseUrl, "baseUrl");
+    noteService.create(resources, baseUrl).then((response) => {
+      setResource(resource.concat(response));
+      //setResource([...resource,response])
+    });
+  };
 
   const service = {
     create,
@@ -36,6 +45,7 @@ const App = () => {
 
   const [notes, noteService] = useResource("http://localhost:3005/notes");
   const [persons, personService] = useResource("http://localhost:3005/persons");
+  // console.log(noteService, "noteService");
   const handleNoteSubmit = (event) => {
     event.preventDefault();
     noteService.create({ content: content.value });
@@ -49,7 +59,11 @@ const App = () => {
     <div>
       <h2>notes</h2>
       <form onSubmit={handleNoteSubmit}>
-        <input {...content} />
+        <input
+          type={content.type}
+          value={content.value}
+          onChange={content.onChange}
+        />
         <button>create</button>
       </form>
       {notes.map((n) => (
